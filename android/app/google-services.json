@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "742147656844",
+    "firebase_url": "https://pdam-1add2-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "pdam-1add2",
+    "storage_bucket": "pdam-1add2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742147656844:android:ecbebfab1c2a0d43b77fa9",
+        "android_client_info": {
+          "package_name": "com.example.pdam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742147656844-9k1lv9ktfh3d92tvsmu1loges9remul5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pdam",
+            "certificate_hash": "082800913ccba09c9324fef6b6ff90b20c205e46"
+          }
+        },
+        {
+          "client_id": "742147656844-0t70m4794lqjmju9c29h73et5m5b83ok.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbFnBQ3tqRvX6fc0qLk9wBDk388CjRssg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742147656844-0t70m4794lqjmju9c29h73et5m5b83ok.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
