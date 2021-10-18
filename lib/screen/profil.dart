@@ -1,6 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
+import 'home.dart';
+
 class ProfilPage extends StatefulWidget {
   final String? uid;
   const ProfilPage({Key? key, this.uid}) : super(key: key);
@@ -17,7 +19,7 @@ class _ProfilPageState extends State<ProfilPage> {
       FirebaseDatabase.instance.reference().child("data_user");
   @override
   void initState() {
-    dbRef.child(widget.uid!).get().then((DataSnapshot? snapshot) {
+    dbRef.child(widget.uid!).once().then((DataSnapshot? snapshot) {
       setState(() {
         _nama = snapshot!.value['nama'];
         _email = snapshot.value['email'];
@@ -31,8 +33,16 @@ class _ProfilPageState extends State<ProfilPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Profil"),
-        ),
+            leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Home(uid: widget.uid)),
+                  );
+                }),
+            title: const Text("Profil Page")),
         body: SingleChildScrollView(
           child: Column(
             // ignore: prefer_const_literals_to_create_immutables
@@ -88,12 +98,9 @@ class _ProfilPageState extends State<ProfilPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ListTile(
-                        leading: const Icon(Icons.water, size: 50),
-                        title: const Text('ID Pelanggan'),
-                        subtitle: _idPen != ""
-                            ? Text(_idPen!)
-                            : const Text('Anda belum memiliki id pelanggan'),
-                      ),
+                          leading: const Icon(Icons.water, size: 50),
+                          title: const Text('ID Pelanggan'),
+                          subtitle: Text(_idPen!)),
                     ],
                   ),
                 ),

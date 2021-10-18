@@ -114,7 +114,17 @@ class _PdamPageState extends State<PdamPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Pendaftaran PDAM")),
+        appBar: AppBar(
+            leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Home(uid: widget.uid)),
+                  );
+                }),
+            title: const Text("Pendaftaran PDAM")),
         body: Form(
             key: _formKey,
             child: _cekdata == null
@@ -231,74 +241,97 @@ class _PdamPageState extends State<PdamPage> {
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 Colors.lightBlue)),
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            dbRef.child(widget.uid!).set({
-                              "namaKtp": basename(_imageFile!.path),
-                              "ktp": getUrl,
-                              "nama": namaController.text,
-                              "jKelamin": _kelamin,
-                              "nomor": nomorController.text,
-                              "alamat": alamatController.text,
-                              "paket": _paket,
-                            }).then((_) {
-                              setState(() {
-                                status = false;
-                                _imageFile = null;
-                                _paket = "R1";
-                                _kelamin = "Laki-Laki";
-                                _cekdata = null;
+                          if (basename(_imageFile!.path) == "" &&
+                              getUrl == "" &&
+                              _kelamin == "" &&
+                              _paket == "") {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text("Error"),
+                                    content: const Text(
+                                        "Gagal, silahkan periksa lagi semua dan usahakan semua form di isi"),
+                                    actions: [
+                                      TextButton(
+                                        child: const Text("Kembali"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  );
+                                });
+                          } else {
+                            if (_formKey.currentState!.validate()) {
+                              dbRef.child(widget.uid!).set({
+                                "namaKtp": basename(_imageFile!.path),
+                                "ktp": getUrl,
+                                "nama": namaController.text,
+                                "jKelamin": _kelamin,
+                                "nomor": nomorController.text,
+                                "alamat": alamatController.text,
+                                "paket": _paket,
+                              }).then((_) {
+                                setState(() {
+                                  status = false;
+                                  _imageFile = null;
+                                  _paket = "R1";
+                                  _kelamin = "Laki-Laki";
+                                  _cekdata = null;
+                                });
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Sukses"),
+                                        content:
+                                            const Text('Berhasil Tambah Data'),
+                                        actions: [
+                                          TextButton(
+                                            child: const Text("Ok"),
+                                            onPressed: () {
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          Home(
+                                                            uid: widget.uid,
+                                                          )));
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    });
+                                namaController.clear();
+                                nomorController.clear();
+                                alamatController.clear();
+                              }).catchError((onError) {
+                                setState(() {
+                                  status = false;
+                                  _imageFile = null;
+                                  _paket = "R1";
+                                  _cekdata = null;
+                                });
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Error"),
+                                        content: Text(onError),
+                                        actions: [
+                                          TextButton(
+                                            child: const Text("Kembali"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    });
                               });
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text("Sukses"),
-                                      content:
-                                          const Text('Berhasil Tambah Data'),
-                                      actions: [
-                                        TextButton(
-                                          child: const Text("Ok"),
-                                          onPressed: () {
-                                            Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        Home(
-                                                          uid: widget.uid,
-                                                        )));
-                                          },
-                                        )
-                                      ],
-                                    );
-                                  });
-                              namaController.clear();
-                              nomorController.clear();
-                              alamatController.clear();
-                            }).catchError((onError) {
-                              setState(() {
-                                status = false;
-                                _imageFile = null;
-                                _paket = "R1";
-                                _cekdata = null;
-                              });
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text("Error"),
-                                      content: Text(onError),
-                                      actions: [
-                                        TextButton(
-                                          child: const Text("Kembali"),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        )
-                                      ],
-                                    );
-                                  });
-                            });
+                            }
                           }
                         },
                         child: const Text('Submit'),

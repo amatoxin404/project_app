@@ -126,7 +126,10 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.green,
         ),
         body: FutureBuilder(
-            future: dbRef.once(),
+            future: dbRef
+                .orderByChild("idUser")
+                .equalTo("mcHfJQwp8ibq7LVhlM4SrCO30Li1")
+                .once(),
             builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data!.value != null) {

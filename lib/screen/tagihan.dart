@@ -1,6 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
+import 'home.dart';
+
 // ignore: must_be_immutable
 class TagihanPage extends StatefulWidget {
   String? uid;
@@ -13,7 +15,6 @@ class TagihanPage extends StatefulWidget {
 class _TagihanPageState extends State<TagihanPage> {
   String? _cekId;
   String? _meteran;
-  String? _error;
   final _formKey = GlobalKey<FormState>();
   TextEditingController meterController = TextEditingController();
   TextEditingController idController = TextEditingController();
@@ -24,7 +25,17 @@ class _TagihanPageState extends State<TagihanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Tagihan Page")),
+        appBar: AppBar(
+            leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Home(uid: widget.uid)),
+                  );
+                }),
+            title: const Text("Tagihan Page")),
         body: Form(
             key: _formKey,
             child: _cekId == null
@@ -144,21 +155,21 @@ class _TagihanPageState extends State<TagihanPage> {
                           String? _harga;
                           var myInt = int.parse(meterController.text);
                           assert(myInt is int);
-                          if (myInt < int.parse(_meteran!) + 60) {
+                          if (myInt <= int.parse(_meteran!) + 60) {
                             setState(() {
                               _harga = "60000";
                             });
                           } else if (myInt > int.parse(_meteran!) + 60 &&
-                              myInt < int.parse(_meteran!) + 100) {
+                              myInt <= int.parse(_meteran!) + 100) {
                             setState(() {
                               _harga = "100000";
                             });
-                          } else if (myInt > int.parse(_meteran!) + 100) {
+                          } else {
                             setState(() {
-                              _error = "Error";
+                              _harga = "Error";
                             });
                           }
-                          _error != "Error"
+                          _harga != "Error"
                               ? showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -196,7 +207,7 @@ class _TagihanPageState extends State<TagihanPage> {
                                       content: const Padding(
                                         padding: EdgeInsets.all(8.0),
                                         child: Text(
-                                            "Melebihi Batas Pemakaian Wjaar Paket Anda Seilahkan Hubungi Admin"),
+                                            "Melebihi Batas Pemakaian Wajar Paket Anda silahkan Hubungi Admin"),
                                       ),
                                       actions: [
                                         TextButton(
